@@ -1,0 +1,211 @@
+%*************************************************
+%         RESULTS OF PART I                      *
+%*************************************************
+
+%***********************************
+%     DOMAIN CONSTRAINTS           *
+%***********************************
+
+all x(H(x) | I(x)).
+%Everything in the domain is either a hat or an individual
+
+-(exists x(H(x) & I(x))). 
+%Nothing in the domain is both a hat and an individual
+
+exists x exists y exists z(-(x=y | x=z | y=z) & I(x) & I(y) & I(z)& all w(I(w) -> (x=w | y=w | z=w))).
+%There are exactly three individuals
+
+I(a) & I(b) & I(c) & -(a=b | a=c | b=c).
+%Those individuals are Alex, Barbara, and Cherise
+
+exists u exists v exists w exists x exists y(-(u=v | u=w | u=x | u=y | v=w | v=x | v=y | w=x | w=y | x=y) & H(u) & H(v) & H(w) & H(x) & H(y) & all z(H(z) -> (z=u | z=v | z=w | z=x | z=y))). 
+%There are exactly five hats. 
+
+H(d) & H(e) & H(f) & H(g) & H(h) & -(d=e | d=f | d=g | d=h | e=f | e=g | e=h | f=g | f=h | g=h).
+%Those hats have names 
+
+all x(B(x) -> H(x)). 
+%All blue hats are hats
+
+all x(R(x) -> H(x)). 
+%All red hats are hats
+
+all x(H(x) -> (B(x) | R(x))). 
+%Every hat is either red or blue
+
+-(exists x(B(x) & R(x))).
+%No hat is both red and blue
+
+exists x exists y (-(x=y) & B(x) & B(y) & all z(B(z) -> (x=z | y=z))).
+%There are exactly two blue hats. 
+
+exists x exists y exists z(-(x=y | x=z | y=z) & R(x) & R(y) & R(z)& all w(R(w) -> (x=w | y=w | z=w))).
+%There are exactly three red hats
+
+%***********************************
+%     RELATION CONSTRAINTS         *
+%***********************************
+
+-(exists x(S(x,x))). 
+%The sees relation is irreflexive
+
+all x all y(S(x,y) -> (I(x) & H(y))). 
+%Individuals see hats
+
+all x all y (K(x,y)->(I(x) & I(y))).
+%Only individuals know things about individuals
+
+all x all y all z((S(x,y) & S(x,z) & -(y=z))-> all w(S(x,w) -> (w=y | w=z))). 
+%Individuals see at most two hats
+
+%***********************************
+%     FACTS                        *
+%***********************************
+
+exists x exists y (-(x=y) & S(a,x) & S(a,y)). 
+%Alex sees two hats
+
+exists x exists y (-(x=y) & S(b,x) & S(b,y)). 
+%Barbara sees two hats
+
+-(exists x(S(c,x))).
+%Cherise is blind
+
+-K(a,a).
+%Alex does not know what color hat she is wearing
+
+-K(b,b).
+%Barbara does not know what color hat she is wearing
+
+%***********************************
+%     DOMAIN/RELATION THEOREMS     *
+%***********************************
+
+all x all y all z((H(x) & H(y) & H(z) & -(x=y | x=z | y=z))-> ((B(x) | R(x)) & (B(y) | R(y)) & (B(z) | R(z)))).
+%Hats are either blue or red
+
+all x all y (S(x,y)-> (B(y) | R(y))).
+%If anyone sees a hat it's either blue or red
+
+all x all y all z ((S(x,y) & S(x,z) & -(y=z)) -> ((B(y) & B(z)) | (R(y) & R(z)) | (B(y) & R(z)) | (R(y) & B(z)))).
+%If someone sees two hats, distribution is blue/blue, red/red, blue/red, or red/blue
+
+exists x exists y (-(x=y) & S(a,x) & S(a,y) & ((B(x) & B(y)) | (R(x) & R(y)) | (B(x) & R(y)))). 
+%Alex sees either a blue/blue, red/red, or blue/red distribution
+
+exists x exists y (-(x=y) & S(b,x) & S(b,y) & ((B(x) & B(y)) | (R(x) & R(y)) | (B(x) & R(y)))). 
+%Barbara sees either a blue/blue, red/red, or blue/red distribution
+
+%***********************************
+%     BRIDGE AXIOMS                *
+%***********************************
+
+exists x exists y (S(a,x) & S(a,y) & -(x=y) & B(x) & B(y)) -> K(a,a).
+%If Alex sees two blue hats she knows what color hat she is wearing; careful! avoid drinker paradox (see below)
+
+exists x exists y (S(b,x) & S(b,y) & -(x=y) & B(x) & B(y)) -> K(b,b).
+%If Barbara sees two blue hats she knows what color hat she is wearing; careful! avoid drinker paradox (see below)
+
+%***********************************
+%     BRIDGE THEOREMS              *
+%***********************************
+
+all x all y ((S(a,x) & S(a,y) & -(x=y) & B(x) & B(y)) -> K(a,a)).
+%If Alex sees any two blue hats then she knows what color hats she is wearing
+
+exists x exists y(S(a,x) & S(a,y) & -(x=y) & -(B(x) & B(y))). 
+%Alex does not see two blue hats
+
+all x all y((S(a,x) & S(a,y) & -(x=y))-> -(B(x) & B(y))). 
+%If Alex sees two hats they are not blue
+		
+all x all y all z((S(x,y) & S(x,z) & -(y=z) & B(y))->-B(z)). 
+%If anyone sees two hats, one of which is blue, then the other hat isn't
+
+exists x exists y exists z(S(x,y) & S(x,z) & -(y=z) & ((R(y) & R(z)) | (B(y) & R(z)))). 
+%Someone sees either a red/red or blue/red distribution of hats 
+
+%*************************************************
+%         RESULTS OF PART II                     *
+%*************************************************
+
+%***********************************
+%     RELATION CONSTRAINTS         *
+%***********************************
+
+all x all y all z((W(x,z) & W(y,z))-> x=y). 
+%Only one individual may wear a given hat
+
+all x all y all z((W(x,y) & W(x,z))->y=z).
+%Every individual wears only one hat
+
+all x all y(W(x,y) -> (I(x) & H(y))). 
+%Only individuals wear hats
+
+all x all y((S(x,y) -> exists z(W(z,y)))).
+%If someone sees a hat then it's being worn by someone
+
+-(exists x exists y(S(x,y) & W(x,y))). 
+%No one sees the hat they are wearing
+
+%***********************************
+%           FACTS                  *
+%***********************************
+
+all x(S(a,x) -> (W(b,x) | W(c,x))). 
+%Alex sees the hats Barbara and Cherise wear
+
+all x(S(b,x) -> (W(a,x) | W(c,x))).
+%Barbara sees the hats Alex and Cherise wear
+
+all x((S(b,x) & W(c,x) & B(x)) -> K(b,b)).
+%If Barbara sees Cherise wearing a blue hat then Barbara knows what color hat she is wearing
+
+%***********************************
+%    PERMISSIBLE MODELS            *
+%***********************************
+
+%exists x exists y(S(a,x) & S(a,y) & -(x=y)& R(x) & R(y)). 
+%Alex sees two red hats
+
+%exists x exists y(S(b,x) & S(b,y) & -(x=y)& R(x) & R(y)). 
+%Barbara sees two red hats 
+
+%exists x exists y(S(a,x) & S(a,y) & -(x=y) & B(x) & R(y) & W(b,x) & W(c,y)). 
+%Alex sees Barbara wearing a blue and Cherise wearing a red hat
+
+%***********************************
+%         THEOREMS                 *
+%***********************************
+
+%-(exists x exists y(S(a,x) & S(a,y) & -(x=y) & R(x) & B(y) & W(b,x) & W(c,y))). 
+%Alex sees Barbara wearing a red hat and Cherise wearing a blue hat
+
+%-(exists x(S(a,x) & B(x) & W(c,x))). 
+%Alex sees Cherise wearing a blue hat
+
+%exists x(W(c,x) & R(x)). 
+%Cherise is wearing a red hat 
+
+%exists x(S(a,x) & R(x)). 
+%Alex sees a red hat
+
+%exists x(S(b,x) & R(x)). 
+%Barbara sees a red hat
+
+%all x all y all z all w((S(x,y) & S(x,z) & S(x,w))->(y=z | y=w | z=w)). 
+%Everyone sees at most two hats 
+
+%all x exists y((I(x) & H(y)) -> W(x,y)). 
+%Everyone is wearing a hat 
+
+%all x((S(a,x) & S(b,x)->W(c,x))). 
+%Alex and Barbara both see the hat Cherise wears 
+
+%***********************************
+%     CAUTION! DON'T USE           *
+%***********************************
+
+%exists x exists y ((S(a,x) & S(a,y) & -(x=y) & B(x) & B(y)) -> K(a,a)).
+%Drinker paradox(trivial truth) If alex sees two blue hats she knows what color hat she is wearing
+

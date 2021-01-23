@@ -1,0 +1,80 @@
+Three Hats Puzzle
+Three individuals, call them Alex, Barbara, and Cherise, enter a pitch black room, where they are led to a table on which rests five hats, 3 red hats and 2 blue hats. The hats are arranged in no obvious order, and no individual can discern the colors in the dark, but Alex, Barbara, and Charles know how many hats of each color there are. They each select a hat from the table, and wear that hat outside the room into a well-lit area. Alex looks at Barbara and Cherise, and says, “I don’t know what color my hat is.” Barbara looks at Alex and Cherise and says, “I don’t know what color my hat is.” Cherise does not look at anyone else, since Cherise is blind. Nevertheless, Cherise says “I know what color my hat is.” This is all that is said, and they each speak truly.
+
+Challenge
+Explain how Cherise knows her hat color?
+
+Note: Like many puzzles, this has numerous lateral solutions, e.g. the red and blue hats are differently shaped, Cherise is colorblind but can see blue, etc. Lateral solutions are easily dismissed without affecting the details of the scenario, e.g. the hats share all properties save color, Cherise is not just colorblind, etc. The challenge is to find a logical solution. A logical solution will follow directly from the details of the scenario, and will not be easily dismissed since doing so will require changing the scenario.
+
+Solution and Discussion
+I pose this puzzle to students who are then encouraged to work in small groups (1-3 students) to find a solution. Once students have understood the puzzle and the distinction between lateral and logical solutions, groups are quick to reason in the following manner:
+
+Since Alex speaks truly, she must not see two blue hats. If Alex did see two blue hats, then she would know her hat was red. Then Alex must see either two red hats or one red and one blue hat. Similarly for Barbara, who must see either two red hats or one red and one blue hat
+
+This seems unsurprising; the reasoning involved is direct, it is an immediate consequence of understanding the details of the case. We may show this formally. First, we fix on our notation.
+
+Our language is first order with identity. Our domain consists of eight objects, which we sort into individuals with the predicate “I” and hats with the predicate “H”. Let “a” denote Alex, “b” Barbara, “c”. Let “B” be the predicate applying to blue hats, and “R” the predicate applying to red hats. Sample axioms characterizing the domain include (see here for the full set):
+
+1.      ∀x(Hx v Ix)
+Everything in the domain is either a hat or an individual
+2.      ~∃x(Hx & Ix)
+Nothing in the domain is both a hat and an individual
+3.      ∃x∃y∃z(x≠y v x≠z v y≠z & Ix & Iy & Iz & ∀w(Iw -> (x=w v y=w v z=w)))
+There are exactly three individuals
+4.      ∀x(Bx -> Hx)
+All blue hats are hats
+5.      ∀x(Rx -> Hx)
+All red hats are hats
+6.      ∀x(Hx -> (Bx v Rx))
+Every hat is either red or blue
+7.      ∃x∃y(x≠y & Bx & By & ∀z(Bz -> (x=z v y=z)))
+There are exactly two blue hats
+
+…And so on. We also introduce relations.  Let “S” stand for an irreflexive binary relation holding between an individual and a hat with the intended reading being that the individual sees the hat. Let binary “K” hold between individuals with the intended reading that the first individual knows the hat color of the second. Sample characterizing axioms include:
+
+8.      ~∃x(Sxx)
+The ‘sees’ relation is irreflexive
+9.      ∀x∀y(Sxy -> (Ix & Hy))
+Individuals see hats
+10.  ∀x∀y(Kxy -> (Ix & Iy))
+Only individuals know things
+11.  ∀x∀y∀z((Sxy & Sxz & y≠z) -> ∀w(S(x,w) -> (w=y v w=z))
+Individuals see at most two hats
+
+…And so on. We also characterize the following facts concerning the case:
+
+12.  ∃x∃y(x≠y & Sax & Say)
+Alex sees two things
+13.  ∃x∃y(x≠y & Sbx & Sby)
+Barbara sees two things
+14.  ~∃x(Scx)
+Cherise sees nothing
+15.  ~Kaa
+Alex does not know what color hat she is wearing
+16.  ~Kbb
+Barbara does not know what color hat she is wearing
+
+With these axioms in hand, we may infer the following additional facts as theorems simply based on the domain and relation constraints:
+
+17.  ∃x∃y(Sax & Say & (Bx & By) v (Rx & Ry) v (Bx & Ry))
+Alex sees either a blue/blue, red/red, or blue/red distribution
+18.  ∃x∃y(Sbx & Sby & (Bx & By) v (Rx & Ry) v (Bx & Ry))
+Barbara sees either a blue/blue, red/red, or blue/red distribution
+
+We add two more plausible facts. Observe, there is a relationship between knowing one’s hat color and the possible hat distribution. Consider Alex. If Alex sees two blue hats she knows what color hat she is wearing, which we may formalize as (watch the scope; avoid the Drinker Paradox!):
+
+19.  ∃x∃y(Sax & Say & x≠y & Bx & By) -> Kaa
+If there are two blue hats Alex sees, then Alex knows her hat color
+
+A similar fact pertains to Barbara, but we will leave that aside here. Importantly, given (15) the consequent of (19) is false. Hence, the following theorems can be inferred:
+
+20.  ∀x∀y(Sax & Say & x≠y) -> ~(Bx & By))
+If Alex sees two hats they are not blue
+21.  ∃x∃y∃z(Sxy & Sxz & y≠z & ((Ry & Rz) v (By & Rz)))
+Someone sees either a red/red or blue/red distribution of hats
+
+In other words, for Alex, Barbara, or Cherise, the only available distributions of colors are red and red, or blue and red. We have then matched the direct reasoning above with our axioms.
+
+Of course, this is not the answer to the puzzle. To solve the puzzle we must infer Cherise knows what color hat she is wearing, i.e. Kcc (Exercise: Why won’t simply adding this fact to the axioms suffice?).
+
+This step seems the trickiest for students. I suspect it is because moving forward in the solution requires indirect reasoning, i.e. assuming something for the sake of a contradiction. The stumbling block, however, often leaves them ready to abandon the puzzle. Don’t let the difficulty of the puzzle stand in the way…we’ll infer the solution next post. In the meantime, play around with the axiom set here. The syntax is readable by Prover9. All theorems were checked with this application. Models were checked with the bundled Mace4 finite model checker.
